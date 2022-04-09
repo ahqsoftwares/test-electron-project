@@ -1,7 +1,7 @@
 {
   "name": "electron-project",
   "version": "v1.0.1",
-  "description": "breh",
+  "description": "no desc",
   "main": "index.js",
   "scripts": {
     "start": "electron-forge start",
