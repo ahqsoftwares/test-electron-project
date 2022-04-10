@@ -33,6 +33,6 @@ jobs:
       env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Build App Zip
-      run: npx @electron-forge/maker-zip
+      run: npx electron-forge make
       env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
