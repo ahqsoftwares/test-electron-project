@@ -158,10 +158,8 @@ async function GetUpdateVersion() {
  * Gets the Current Version from the File System
  * @param {defaultOptions} options 
  */
-function GetCurrentVersion(options) {
-    return JSON.parse(fs.readFileSync(options.versionFile, (err, data) => {
-        if (err) throw err;
-    }))['game_version'];
+function GetCurrentVersion() {
+    return require("../package.json").version
 }
 
 /**
