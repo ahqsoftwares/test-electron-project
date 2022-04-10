@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "package": "electron-packager . --publish=always",
-    "zip": "electron-forge package --publish=always"
+    "zip": "electron-forge package . --publish=always"
   },
   "keywords": [],
   "author": "AHQ Softwares",
