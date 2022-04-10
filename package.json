@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "package": "electron-packager . --publish=always",
-    "zip": "npx electron-forge make --set-version-string FileVersion v1.0.5"
+    "zip": "electron-forge package --publish=always"
   },
   "keywords": [],
   "author": "AHQ Softwares",
