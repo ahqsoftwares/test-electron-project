@@ -1,15 +1,15 @@
 {
   "name": "electron-project",
-  "version": "v1.0.2",
+  "version": "v1.0.1",
   "description": "An app which can auto update",
   "main": "index.js",
   "scripts": {
     "start": "electron .",
-    "package": "electron-forge package",
+    "package": "electron-packager . --publish=always",
     "make": "npx electron-forge make"
   },
   "keywords": [],
-  "author": "",
+  "author": "AHQ Softwares",
   "license": "ISC",
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.63",
@@ -23,7 +23,8 @@
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
     "node-fetch": "^2.6.7",
-    "package": "^1.0.1"
+    "package": "^1.0.1",
+    "uaup-js": "^0.0.22"
   },
   "build": {
     "appId": "TESTING",

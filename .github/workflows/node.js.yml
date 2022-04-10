@@ -28,7 +28,11 @@ jobs:
         cache: 'npm'
     - name: Install Files
       run: npm i .
-    - name: Build App
+    - name: Build App .exe
       run: npx electron-builder --publish=always
+      env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Build App Zip
+      run: npx electron-packager . --publish=always
       env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
