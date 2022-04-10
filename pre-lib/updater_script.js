@@ -131,16 +131,7 @@ async function GetUpdateURL(options, json) {
         owner: "ahqsoftwares",
         type: "private",
         repo: "test-electron-project"
-      }).then(response => response.json()).then(data => { json = data; }).catch(e => {
-        try {
-            // Electron
-            alert(`Something went wrong: ${e}`);
-        } catch {
-            // NodeJS
-            console.error(`Something went wrong: ${e}`);
-            return;
-        }
-    }).then(() => {
+      }).then((json) => {
         let zip;
         for (i = 0; i < json['assets'].length; i++) {
             if (json['assets'][i]['name'] === `${options.appName}-${GetUpdateVersion()}-win.zip`) zip = json['assets'][i];
@@ -152,23 +143,15 @@ async function GetUpdateURL(options, json) {
 /**
  * Gets the current relase version from GitHub
  */
-async function GetUpdateVersion(json) {
+async function GetUpdateVersion() {
     return await octokit.request("GET /repos/ahqsoftwares/test-electron-project/releases/latest", {
         owner: "ahqsoftwares",
         repo: "test-electron-project",
         type: "private",
-      }).then(response => response.json()).then(data => { json = data; }).catch(e => {
-        try {
-            // Electron
-            alert(`Something went wrong: ${e}`);
-        } catch {
-            // NodeJS
-            console.error(`Something went wrong: ${e}`);
-            return;
-        }
-    }).then(() => {
-        return json['tag_name'];
-    });
+      }).then(response => {
+        console.log(response);
+        return response['name'];
+      });
 }
 
 /**
