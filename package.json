@@ -1,6 +1,6 @@
 {
   "name": "electron-project",
-  "version": "v1.0.6",
+  "version": "v1.0.5",
   "description": "An app which can auto update",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,7 @@
     "electron-builder": "^22.14.13"
   },
   "dependencies": {
+    "@octokit/core": "^3.6.0",
     "electron-squirrel-startup": "^1.0.0",
     "node-fetch": "^2.6.7",
     "package": "^1.0.1",

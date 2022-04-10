@@ -3,7 +3,8 @@
 //#region IMPORTING
 const request = require('request');
 const fs = require('fs');
-const fetch = require("node-fetch");
+const { Octokit } = require("@octokit/core");
+const octokit = new Octokit({ auth: `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` });
 //#endregion IMPORTING
 
 ////////////////////    GLOBAL VARIABLES    ////////////////////
@@ -31,7 +32,7 @@ const defaultOptions = {
     useGithub: true,
     gitRepo: "unknown",
     gitUsername: "unknown",
-    isGitRepoPrivate: false,
+    isGitRepoPrivate: true,
     gitRepoToken: "uknown",
 
     appName: "unknown",
@@ -126,7 +127,11 @@ function createDirectories(options) {
  */
 async function GetUpdateURL(options, json) {
 
-    return fetch(git_api).then(response => response.json()).then(data => { json = data; }).catch(e => {
+    return await octokit.request("GET /repos/ahqsoftwares/test-electron-project/releases/latest", {
+        owner: "ahqsoftwares",
+        type: "private",
+        repo: "test-electron-project"
+      }).then(response => response.json()).then(data => { json = data; }).catch(e => {
         try {
             // Electron
             alert(`Something went wrong: ${e}`);
@@ -138,7 +143,7 @@ async function GetUpdateURL(options, json) {
     }).then(() => {
         let zip;
         for (i = 0; i < json['assets'].length; i++) {
-            if (json['assets'][i]['name'] === `${options.appName}.zip`) zip = json['assets'][i];
+            if (json['assets'][i]['name'] === `${options.appName}-${GetUpdateVersion()}-win.zip`) zip = json['assets'][i];
         }
         return zip['browser_download_url'];
     });
@@ -148,7 +153,11 @@ async function GetUpdateURL(options, json) {
  * Gets the current relase version from GitHub
  */
 async function GetUpdateVersion(json) {
-    return fetch(git_api).then(response => response.json()).then(data => { json = data; }).catch(e => {
+    return await octokit.request("GET /repos/ahqsoftwares/test-electron-project/releases/latest", {
+        owner: "ahqsoftwares",
+        repo: "test-electron-project",
+        type: "private",
+      }).then(response => response.json()).then(data => { json = data; }).catch(e => {
         try {
             // Electron
             alert(`Something went wrong: ${e}`);
@@ -274,6 +283,27 @@ async function CheckForUpdates(options = defaultOptions) {
         } else {
             console.warn("Couln't find the Version File, this usually means that there was no previous update.")
             return true;
+        }
+    }
+}
+
+async function getNew(options = defaultOptions) {
+    if (testOptions(options)) {
+        options = setOptions(options);
+        createDirectories(options);
+        updateHeader(options.stageTitles.Checking);
+        await sleep(1000);
+        new_version = await GetUpdateVersion();
+        if (fs.existsSync(options.versionFile)) {
+            current_version = GetCurrentVersion(options);
+            if (current_version == "unknown") {
+                console.error('Unable to Load Current Version... Trying again');
+                return true;
+            }
+            return new_version;
+        } else {
+            console.warn("Couln't find the Version File, this usually means that there was no previous update.")
+            return null;
         }
     }
 }

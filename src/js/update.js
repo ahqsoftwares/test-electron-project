@@ -1,4 +1,4 @@
-const uaup = require('uaup-js');
+const uaup = require('../../pre-lib/updater_script');
 
 const defaultStages = {
     Checking: "Checking For Updates!",
@@ -11,6 +11,7 @@ const defaultStages = {
 };
 
 const updateOptions = {
+    gitRepoToken: "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",
     useGithub: true, // {Default is true} [Optional] Only Github is Currenlty Supported.
     gitRepo: "test-electron-project", // [Required] Your Repo Name
     gitUsername: "ahqsoftwares",  // [Required] Your GitHub Username.

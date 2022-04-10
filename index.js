@@ -1,6 +1,6 @@
 const {app, BrowserWindow, ipcMain, Notification} = require("electron");
 const ipc = ipcMain;
-const uaup = require('uaup-js');
+const uaup = require('./pre-lib/updater_script');
 
 
 
@@ -15,6 +15,7 @@ function load() {
     /*showNotification()*/
 
     const updateOptions = {
+        gitRepoToken: "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",
         useGithub: true, // {Default is true} [Optional] Only Github is Currenlty Supported.
         gitRepo: "test-electron-project", // [Required] Your Repo Name
         gitUsername: "ahqsoftwares",  // [Required] Your GitHub Username.
