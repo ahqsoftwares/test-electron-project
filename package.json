@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "package": "electron-packager . --publish=always",
-    "zip": "electron-forge package"
+    "zip": "npm -v"
   },
   "keywords": [],
   "author": "AHQ Softwares",
@@ -30,7 +30,8 @@
     "appId": "TESTING",
     "win": {
       "target": [
-        "nsis"
+        "nsis",
+        "zip"
       ]
     },
     "nsis": {
