@@ -26,7 +26,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm i .
-    - run: npx electron-builder --publish=always
+    - name: Install Files
+      run: npm i .
+    - name: Build App
+      run: npx electron-builder --publish=always
       env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

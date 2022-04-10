@@ -1,10 +1,10 @@
 {
   "name": "electron-project",
-  "version": "v1.0.1",
-  "description": "no desc",
+  "version": "v1.0.2",
+  "description": "An app which can auto update",
   "main": "index.js",
   "scripts": {
-    "start": "electron-forge start",
+    "start": "electron .",
     "package": "electron-forge package",
     "make": "npx electron-forge make"
   },
@@ -22,12 +22,15 @@
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
+    "node-fetch": "^2.6.7",
     "package": "^1.0.1"
   },
   "build": {
     "appId": "TESTING",
     "win": {
-      "target": ["nsis"]
+      "target": [
+        "nsis"
+      ]
     },
     "nsis": {
       "oneClick": false,
