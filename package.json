@@ -1,12 +1,12 @@
 {
   "name": "electron-project",
-  "version": "v1.0.2",
+  "version": "v1.0.3",
   "description": "An app which can auto update",
   "main": "index.js",
   "scripts": {
     "start": "electron .",
     "package": "electron-packager . --publish=always",
-    "make": "npx electron-forge make"
+    "zip": "npx @electron-forge/maker-zip"
   },
   "keywords": [],
   "author": "AHQ Softwares",
