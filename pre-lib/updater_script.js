@@ -133,10 +133,12 @@ async function GetUpdateURL(options, json) {
         repo: "test-electron-project"
       }).then((json) => {
         let zip;
-        for (i = 0; i < json['assets'].length; i++) {
-            if (json['assets'][i]['name'] === `${options.appName}-${GetUpdateVersion()}-win.zip`) zip = json['assets'][i];
+        for (i = 0; i < json[`data`]['assets'].length; i++) {
+            //console.log(json[`data`][`assets`]);
+            if (json[`data`]['assets'][i]['name'] === `${options.appName}-${String(GetUpdateVersion()).replace("v", "")}-win.zip`) zip = json[`data`]['assets'][i][`browser_download_url`];
         }
-        return zip['browser_download_url'];
+        console.log(`update uri fetched`);
+        return zip;
     });
 }
 
@@ -149,8 +151,11 @@ async function GetUpdateVersion() {
         repo: "test-electron-project",
         type: "private",
       }).then(response => {
-        console.log(response);
-        return response['name'];
+        console.log({
+            type: typeof(response[`data`]['tag_name']),
+            data: response[`data`]['tag_name']
+        });
+        return response[`data`]['tag_name'];
       });
 }
 
@@ -159,7 +164,8 @@ async function GetUpdateVersion() {
  * @param {defaultOptions} options 
  */
 function GetCurrentVersion() {
-    return require("../package.json").version
+    console.log(`fetched version`);
+    return require("../package.json").version;
 }
 
 /**
@@ -218,11 +224,12 @@ async function Update(options = defaultOptions) {
     if (testOptions(options)) {
         options = setOptions(options);
         createDirectories(options);
+        console.log(`starting download`)
         if (options.forceUpdate || await CheckForUpdates(options)) {
             updateHeader(options.stageTitles.Found);
             await sleep(1000);
             let url = await GetUpdateURL(options);
-            Download(url, `${options.tempDirectory}\\${options.appName}.zip`, options);
+            Download(url, `${options.tempDirectory}\\${options.appName}-${GetUpdateVersion()}-win.zip`, options);
             UpdateCurrentVersion(options);
         } else {
             updateHeader(options.stageTitles.NotFound);
@@ -247,7 +254,7 @@ async function Update(options = defaultOptions) {
  * @param {defaultOptions} options 
  * @returns {*} true if an update is needed and false if not
  */
-async function CheckForUpdates(options = defaultOptions) {
+async function CheckForUpdates(options) {
     if (testOptions(options)) {
         options = setOptions(options);
         createDirectories(options);
@@ -262,8 +269,9 @@ async function CheckForUpdates(options = defaultOptions) {
             }
             return current_version !== new_version;
         } else {
+            current_version = require("../package.json").version;
             console.warn("Couln't find the Version File, this usually means that there was no previous update.")
-            return true;
+            return current_version !== new_version;;
         }
     }
 }
@@ -302,7 +310,7 @@ function Download(url, path, options) {
     var req = request(
         {
             method: 'GET',
-            uri: url
+            uri: `https://github.com/ahqsoftwares/test-electron-project/releases/download/${GetUpdateVersion()}/electron-project-${GetCurrentVersion().replace("v", "")}-win.zip`
         }
     );
 
@@ -329,7 +337,7 @@ function Download(url, path, options) {
 function Install(options) {
     updateHeader(options.stageTitles.Unzipping);
     var AdmZip = require('adm-zip');
-    var zip = new AdmZip(`${options.tempDirectory}/${options.appName}.zip`);
+    var zip = new AdmZip(`${options.tempDirectory}\\${options.appName}.zip`);
 
     zip.extractAllTo(options.appDirectory, true);
     setTimeout(() => CleanUp(options), 2000);

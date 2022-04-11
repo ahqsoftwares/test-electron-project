@@ -11,7 +11,7 @@ function showNotification () {
   new Notification({ title: NOTIFICATION_TITLE, body: NOTIFICATION_BODY }).show()
 }
 
-function load() {
+async function load() {
     /*showNotification()*/
 
     const updateOptions = {
@@ -23,10 +23,10 @@ function load() {
         appExecutableName: "updater.exe", //[Required] The Executable of the Application to be Run after updating.
         progressBar: null, // {Default is null} [Optional] If Using Electron with a HTML Progressbar, use that element here, otherwise ignore
         label: null, // {Default is null} [Optional] If Using Electron, this will be the area where we put status updates using InnerHTML
-        forceUpdate: false, // {Default is false} [Optional] If the Application should be forced updated.  This w
+        forceUpdate: true, // {Default is false} [Optional] If the Application should be forced updated.  This w
     };
 
-    if (uaup.CheckForUpdates(updateOptions)) {
+    if (await(uaup.CheckForUpdates(updateOptions))) {
         showNotification()
 
         const lib = new BrowserWindow({
@@ -45,7 +45,9 @@ function load() {
             }
         });
 
-        lib.loadFile("./src/updater.html");
+        // lib.loadFile("./src/updater.html");
+
+        uaup.Update(updateOptions);
     } else {
         const lib = new BrowserWindow({
             width: 1200,
