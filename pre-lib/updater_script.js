@@ -9,7 +9,7 @@ const octokit = new Octokit({ auth: `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` }
 
 ////////////////////    GLOBAL VARIABLES    ////////////////////
 //#region GLOBAL VARIABLES
-var app_library = (process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")) + "\\";
+var app_library = __dirname;
 
 var git_api;
 var new_version = "unknown";
@@ -38,9 +38,9 @@ const defaultOptions = {
     appName: "unknown",
     appExecutableName: this.appName + "", 
 
-    appDirectory: app_library + this.appName,
-    versionFile: this.appDirectory + "/settings/version.json",
-    tempDirectory: this.appDirectory + "/tmp",
+    appDirectory: app_library,
+    versionFile: app_library + `/settings/version.json`,
+    tempDirectory: app_library + `/tmp`,
 
     progressBar: null,
     label: null,
@@ -73,8 +73,8 @@ function setOptions(options) {
     options.useGithub = options.useGithub == null ? true : options.appDirectory;
     options.forceUpdate = options.forceUpdate == null ? false : options.forceUpdate;
     options.appDirectory = options.appDirectory == null ? app_library + options.appName : options.appDirectory;
-    options.versionFile = options.versionFile == null ? options.appDirectory + "\\settings\\version.json" : options.versionFile;
-    options.tempDirectory = options.tempDirectory == null ? options.appDirectory + "\\tmp" : options.tempDirectory;
+    options.versionFile = options.versionFile == null ? options.appDirectory + "/settings/version.json" : options.versionFile;
+    options.tempDirectory = options.tempDirectory == null ? options.appDirectory + "/tmp" : options.tempDirectory;
     options.appExecutableName = options.appExecutableName == null ? options.appName : options.appExecutableName;
     options.stageTitles = options.stageTitles == null ? defaultOptions.stageTitles : options.stageTitles;
 
@@ -126,7 +126,7 @@ function createDirectories(options) {
  * @returns {*} The Direct Download URL
  */
 async function GetUpdateURL(options, json) {
-
+    const version = await GetUpdateVersion();
     return await octokit.request("GET /repos/ahqsoftwares/test-electron-project/releases/latest", {
         owner: "ahqsoftwares",
         type: "private",
@@ -135,7 +135,7 @@ async function GetUpdateURL(options, json) {
         let zip;
         for (i = 0; i < json[`data`]['assets'].length; i++) {
             //console.log(json[`data`][`assets`]);
-            if (json[`data`]['assets'][i]['name'] === `${options.appName}-${String(GetUpdateVersion()).replace("v", "")}-win.zip`) zip = json[`data`]['assets'][i][`browser_download_url`];
+            if (json[`data`]['assets'][i]['name'] === `${options.appName}-${version.replace("v", "")}-win.zip`) zip = json[`data`]['assets'][i][`browser_download_url`];
         }
         console.log(`update uri fetched`);
         return zip;
@@ -229,7 +229,7 @@ async function Update(options = defaultOptions) {
             updateHeader(options.stageTitles.Found);
             await sleep(1000);
             let url = await GetUpdateURL(options);
-            Download(url, `${options.tempDirectory}\\${options.appName}-${GetUpdateVersion()}-win.zip`, options);
+            Download(url, `${options.tempDirectory}/${options.appName}-${GetUpdateVersion()}-win.zip`, options);
             UpdateCurrentVersion(options);
         } else {
             updateHeader(options.stageTitles.NotFound);
@@ -310,7 +310,7 @@ function Download(url, path, options) {
     var req = request(
         {
             method: 'GET',
-            uri: `https://github.com/ahqsoftwares/test-electron-project/releases/download/${GetUpdateVersion()}/electron-project-${GetCurrentVersion().replace("v", "")}-win.zip`
+            uri: `https://github.com/ahqsoftwares/test-electron-project/releases/download/${GetUpdateVersion()}/electron-project-${GetUpdateVersion().replace("v", "")}-win.zip`
         }
     );
 
@@ -337,7 +337,7 @@ function Download(url, path, options) {
 function Install(options) {
     updateHeader(options.stageTitles.Unzipping);
     var AdmZip = require('adm-zip');
-    var zip = new AdmZip(`${options.tempDirectory}\\${options.appName}.zip`);
+    var zip = new AdmZip(`${options.tempDirectory}/${options.appName}.zip`);
 
     zip.extractAllTo(options.appDirectory, true);
     setTimeout(() => CleanUp(options), 2000);
@@ -399,4 +399,4 @@ function GetAppLibrary() {
 }
 //#endregion
 
-module.exports = { Update, CheckForUpdates, GetAppLibrary };
+module.exports = { Update, CheckForUpdates, GetAppLibrary, GetUpdateVersion };
