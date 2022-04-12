@@ -1,6 +1,6 @@
 {
   "name": "electron-project",
-  "version": "v1.2.0",
+  "version": "v1.2.1",
   "description": "An app which can auto update",
   "main": "index.js",
   "scripts": {
