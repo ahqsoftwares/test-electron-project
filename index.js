@@ -24,6 +24,9 @@ async function load() {
     autoUpdater.on('update-not-found', () => {
         start(false);
     });
+    autoUpdater.on('error', () => {
+        start(false);
+    });
 }
 
 async function start(update) {
