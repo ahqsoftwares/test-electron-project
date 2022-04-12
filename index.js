@@ -1,8 +1,12 @@
 const {app, BrowserWindow, ipcMain, Notification} = require("electron");
 const ipc = ipcMain;
-const uaup = require('./pre-lib/updater_script');
+const { autoUpdater } = require("electron-updater");
+autoUpdater.autoDownload = false;
 
 
+function updateCheck() {
+    autoUpdater.checkForUpdates()
+}
 
 const NOTIFICATION_TITLE = 'New Update'
 const NOTIFICATION_BODY = 'Starting to download updates!'
@@ -12,21 +16,15 @@ function showNotification () {
 }
 
 async function load() {
-    /*showNotification()*/
+//loads the update check
+    updateCheck()
+    autoUpdater.on('update-available', () => {
+        start(true);
+    });
+}
 
-    const updateOptions = {
-        gitRepoToken: "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",
-        useGithub: true, // {Default is true} [Optional] Only Github is Currenlty Supported.
-        gitRepo: "test-electron-project", // [Required] Your Repo Name
-        gitUsername: "ahqsoftwares",  // [Required] Your GitHub Username.
-        appName: "electron-project", //[Required] The Name of the app archive and the app folder.
-        appExecutableName: "updater.exe", //[Required] The Executable of the Application to be Run after updating.
-        progressBar: null, // {Default is null} [Optional] If Using Electron with a HTML Progressbar, use that element here, otherwise ignore
-        label: null, // {Default is null} [Optional] If Using Electron, this will be the area where we put status updates using InnerHTML
-        forceUpdate: true, // {Default is false} [Optional] If the Application should be forced updated.  This w
-    };
-
-    if (await(uaup.CheckForUpdates(updateOptions))) {
+async function start(update) {
+    if (update) {
         showNotification()
 
         const lib = new BrowserWindow({
@@ -45,9 +43,7 @@ async function load() {
             }
         });
 
-        // lib.loadFile("./src/updater.html");
-
-        uaup.Update(updateOptions);
+        lib.loadFile("./src/updater.html");
     } else {
         const lib = new BrowserWindow({
             width: 1200,
@@ -79,7 +75,6 @@ async function load() {
         }
     });
     }
-
 }
 
 app.whenReady().then(() => {

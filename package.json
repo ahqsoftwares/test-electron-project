@@ -1,13 +1,14 @@
 {
   "name": "electron-project",
-  "version": "v1.0.5",
+  "version": "v1.0.9",
   "description": "An app which can auto update",
   "main": "index.js",
   "scripts": {
     "start": "electron .",
     "package": "electron-packager . --publish=always",
     "zip": "npm -v",
-    "test": "node test/test"
+    "test": "node test/test",
+    "release": "electron-builder"
   },
   "keywords": [],
   "author": "AHQ Softwares",
@@ -24,13 +25,15 @@
   "dependencies": {
     "@octokit/core": "^3.6.0",
     "electron-squirrel-startup": "^1.0.0",
+    "electron-updater": "^5.0.1",
+    "filedownloader": "^1.2.7",
     "node-fetch": "^2.6.7",
-    "package": "^1.0.1",
-    "uaup-js": "^0.0.22"
+    "package": "^1.0.1"
   },
   "build": {
     "appId": "TESTING",
     "win": {
+      "publish": ["github", "bitbucket"],
       "target": [
         "nsis",
         "zip"
