@@ -1,6 +1,6 @@
 {
   "name": "electron-project",
-  "version": "v1.2.8",
+  "version": "v1.2.9",
   "description": "A Test App",
   "main": "index.js",
   "scripts": {
@@ -28,12 +28,15 @@
     "electron-updater": "^5.0.1",
     "filedownloader": "^1.2.7",
     "node-fetch": "^2.6.7",
-    "package": "^1.0.1"
+    "package": "^1.0.1",
+    "uaup-js": "github:ahqsoftwares/UAUP-JS"
   },
   "build": {
     "appId": "TESTING",
     "win": {
-      "publish": ["github"],
+      "publish": [
+        "github"
+      ],
       "target": [
         "nsis",
         "zip"
