@@ -33,6 +33,6 @@ jobs:
       env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Build App .exe
-      run: npx electron-builder --publish=always --c.snap.publish=github
+      run: npx electron-builder --publish=always
       env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
