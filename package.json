@@ -1,6 +1,6 @@
 {
   "name": "electron-project",
-  "version": "v1.2.7",
+  "version": "v1.2.8",
   "description": "A Test App",
   "main": "index.js",
   "scripts": {

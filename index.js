@@ -74,6 +74,49 @@ async function start(update, old_win) {
         });
 
         lib.loadFile("./src/updater.html");
+    autoUpdater.checkForUpdates()
+    autoUpdater.on('update-available', () => {
+        autoUpdater.downloadUpdate()
+        autoUpdater.on('update-downloaded', async() => {
+            await new Notification({title: "Starting Install!", body: "Installing Update!"}).show()
+                autoUpdater.quitAndInstall({
+                    isSilent: true,
+                    isForceRunAfter: true
+                });
+            });
+        });
+        autoUpdater.on("error", async() => {
+            lib.close()
+            const wim = new BrowserWindow({
+                width: 1200,
+                height: 600,
+                minHeight: 560,
+                minWidth: 940,
+                thickFrame: true,
+                frame: false,
+                webPreferences: {
+                    nodeIntegration: true,
+                    contextIsolation: false,
+                    devtools: true
+                }
+            });
+            
+            wim.loadFile("./src/index.html");
+            
+            ipc.on("closeApp", () => {
+            wim.close()
+            });
+            ipc.on("minimiseApp", () => {
+            wim.minimize()
+            });
+            ipc.on("dockApp", () => {
+            if (lib.isMaximized()) {
+                wim.restore()
+            } else {
+                wim.maximize()
+            }
+            });
+        });
     }
 }
 
