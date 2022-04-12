@@ -50,12 +50,6 @@ if (lib.isMaximized()) {
     autoUpdater.on('update-available', () => {
         start(true, lib);
     });
-    autoUpdater.on('update-not-found', () => {
-        start(false, lib);
-    });
-    autoUpdater.on('error', () => {
-        start(false, lib);
-    });
 }
 
 async function start(update, old_win) {
@@ -80,36 +74,6 @@ async function start(update, old_win) {
         });
 
         lib.loadFile("./src/updater.html");
-    } else {
-        const lib = new BrowserWindow({
-            width: 1200,
-            height: 600,
-            minHeight: 560,
-            minWidth: 940,
-            thickFrame: true,
-            frame: false,
-            webPreferences: {
-                nodeIntegration: true,
-                contextIsolation: false,
-                devtools: true
-            }
-        });
-
-    lib.loadFile("./src/index.html");
-
-    ipc.on("closeApp", () => {
-        lib.close()
-    });
-    ipc.on("minimiseApp", () => {
-        lib.minimize()
-    });
-    ipc.on("dockApp", () => {
-        if (lib.isMaximized()) {
-            lib.restore()
-        } else {
-            lib.maximize()
-        }
-    });
     }
 }
 
