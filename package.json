@@ -1,6 +1,6 @@
 {
   "name": "electron-project",
-  "version": "v1.1.0",
+  "version": "v1.2.0",
   "description": "An app which can auto update",
   "main": "index.js",
   "scripts": {
@@ -33,7 +33,7 @@
   "build": {
     "appId": "TESTING",
     "win": {
-      "publish": ["github", "bitbucket"],
+      "publish": ["github"],
       "target": [
         "nsis",
         "zip"
