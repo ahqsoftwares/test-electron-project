@@ -17,21 +17,51 @@ function showNotification () {
 
 async function load() {
 //loads the update check
+const lib = new BrowserWindow({
+    width: 1200,
+    height: 600,
+    minHeight: 560,
+    minWidth: 940,
+    thickFrame: true,
+    frame: false,
+    webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+        devtools: true
+    }
+});
+
+lib.loadFile("./src/index.html");
+
+ipc.on("closeApp", () => {
+lib.close()
+});
+ipc.on("minimiseApp", () => {
+lib.minimize()
+});
+ipc.on("dockApp", () => {
+if (lib.isMaximized()) {
+    lib.restore()
+} else {
+    lib.maximize()
+}
+});
     updateCheck()
     autoUpdater.on('update-available', () => {
-        start(true);
+        start(true, lib);
     });
     autoUpdater.on('update-not-found', () => {
-        start(false);
+        start(false, lib);
     });
     autoUpdater.on('error', () => {
-        start(false);
+        start(false, lib);
     });
 }
 
-async function start(update) {
+async function start(update, old_win) {
     if (update) {
         showNotification()
+        old_win.close()
 
         const lib = new BrowserWindow({
             width: 600,

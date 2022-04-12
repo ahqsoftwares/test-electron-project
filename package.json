@@ -1,7 +1,7 @@
 {
   "name": "electron-project",
-  "version": "v1.2.4",
-  "description": "An app which can auto update",
+  "version": "v1.2.6",
+  "description": "A Test App",
   "main": "index.js",
   "scripts": {
     "start": "electron .",
@@ -37,7 +37,8 @@
       "target": [
         "nsis",
         "zip"
-      ]
+      ],
+      "publisherName": "AHQ Softwares"
     },
     "nsis": {
       "oneClick": false,
