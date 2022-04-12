@@ -79,8 +79,10 @@ async function start(update, old_win) {
 
 app.whenReady().then(() => {
     load()
-
     app.on("activate", () => {
         if (BrowserWindow.getAllWindows().length == 0) load()
+    });
+    app.on('window-all-closed', () => {
+        app.quit();
     });
 });
