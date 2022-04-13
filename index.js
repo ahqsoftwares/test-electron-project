@@ -6,6 +6,7 @@ autoUpdater.autoDownload = false;
 
 function updateCheck() {
     autoUpdater.checkForUpdates()
+    
 }
 
 const NOTIFICATION_TITLE = 'New Update'
