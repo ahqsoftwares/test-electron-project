@@ -1,7 +1,6 @@
 const {app, BrowserWindow, ipcMain, Notification} = require("electron");
-const { update } = require("lodash");
 const ipc = ipcMain;
-const { CheckForUpdates } = require("uaup-js");
+const { CheckForUpdates, execute } = require("uaup-js");
 
 
 async function updateCheck() {
@@ -74,6 +73,38 @@ if (lib.isMaximized()) {
         start(true, lib);
     }
 }
+
+execute(async function() {
+    const lib = new BrowserWindow({
+        width: 1200,
+        height: 600,
+        minHeight: 560,
+        minWidth: 940,
+        thickFrame: true,
+        frame: false,
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+            devtools: true
+        }
+    });
+    
+    lib.loadFile("./src/index.html");
+    
+    ipc.on("closeApp", () => {
+    lib.close()
+    });
+    ipc.on("minimiseApp", () => {
+    lib.minimize()
+    });
+    ipc.on("dockApp", () => {
+    if (lib.isMaximized()) {
+        lib.restore()
+    } else {
+        lib.maximize()
+    }
+    });
+});
 
 async function start(update, old_win) {
     if (update) {
