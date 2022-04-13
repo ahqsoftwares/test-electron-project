@@ -45,8 +45,7 @@
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "publisherName": "AHQ Softwares"
+      "allowToChangeInstallationDirectory": true
     }
   },
   "config": {
