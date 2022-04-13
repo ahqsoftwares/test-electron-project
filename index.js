@@ -1,5 +1,6 @@
 const {app, BrowserWindow, ipcMain, Notification} = require("electron");
 const ipc = ipcMain;
+const { update } = require("lodash");
 const { CheckForUpdates, execute } = require("uaup-js");
 
 const updater = new BrowserWindow({

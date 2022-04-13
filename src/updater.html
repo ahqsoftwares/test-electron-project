@@ -3,11 +3,25 @@
     <head>
         <title>Updating</title>
     </head>
+    <style>
+        label {
+            text-align: center;
+            font-weight: bolder;
+            font-size: larger;
+            position: relative;
+            font-family: 'Times New Roman', Times, serif;
+            font-stretch: condensed;
+        }
+        progress {
+            background-color: aliceblue;
+        }
+    </style>
     <body>
         
-    <label for="download" id="download-label"></label>
-
-    <progress id="download" max="100" value="0"></progress>
+    <label for="download" id="download-label">Please Wait</label>
+    <div style="align-items: center;">
+    <progress id="download" max="100" value="1"></progress>
+    </div>
 
     <script src="./js/update.js"></script>
     </body>

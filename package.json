@@ -1,6 +1,6 @@
 {
   "name": "electron-project",
-  "version": "v1.3.6",
+  "version": "v1.3.7",
   "description": "A Test App",
   "main": "index.js",
   "scripts": {
@@ -27,6 +27,7 @@
     "electron-squirrel-startup": "^1.0.0",
     "electron-updater": "^5.0.1",
     "filedownloader": "^1.2.7",
+    "loadash": "^1.0.0",
     "node-fetch": "^2.6.7",
     "package": "^1.0.1",
     "uaup-js": "github:ahqsoftwares/UAUP-JS"
