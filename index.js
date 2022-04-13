@@ -2,6 +2,21 @@ const {app, BrowserWindow, ipcMain, Notification} = require("electron");
 const ipc = ipcMain;
 const { CheckForUpdates, execute } = require("uaup-js");
 
+const updater = new BrowserWindow({
+    width: 600,
+    height: 800,
+    minHeight: 600,
+    minWidth: 800,
+    maxHeight: 600,
+    maxWidth: 800,
+    thickFrame: true,
+    frame: false,
+    webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+        devtools: true
+    }
+});
 
 async function updateCheck() {
     const defaultStages = {
@@ -53,7 +68,7 @@ const lib = new BrowserWindow({
 });
 
 lib.loadFile("./src/index.html");
-
+updater.close()
 ipc.on("closeApp", () => {
 lib.close()
 });
@@ -110,24 +125,7 @@ async function start(update, old_win) {
     if (update) {
         showNotification()
         old_win.close()
-
-        const lib = new BrowserWindow({
-            width: 600,
-            height: 800,
-            minHeight: 600,
-            minWidth: 800,
-            maxHeight: 600,
-            maxWidth: 800,
-            thickFrame: true,
-            frame: false,
-            webPreferences: {
-                nodeIntegration: true,
-                contextIsolation: false,
-                devtools: true
-            }
-        });
-
-        lib.loadFile("./src/updater.html");
+        updater.loadFile("./src/updater.html");
     }
 }
 
