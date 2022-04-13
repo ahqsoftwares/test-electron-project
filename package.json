@@ -1,6 +1,6 @@
 {
   "name": "electron-project",
-  "version": "v1.3.2",
+  "version": "v1.3.4",
   "description": "A Test App",
   "main": "index.js",
   "scripts": {
@@ -45,7 +45,8 @@
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "publisherName": "AHQ Softwares"
     }
   },
   "config": {
