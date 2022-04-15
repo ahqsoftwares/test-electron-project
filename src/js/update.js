@@ -1,5 +1,5 @@
 const uaup = require('uaup-js');
-//const {ipcRenderer} = require("electron");
+const {ipcRenderer} = require("electron");
 
 
 //This is Optional
@@ -25,4 +25,4 @@ const updateOptions = {
     stageTitles: defaultStages, // {Default is defaultStages} [Optional] Sets the Status Title for Each Stage
 };
 
-uaup.Update(updateOptions);
+uaup.Update(updateOptions, ipcRenderer);

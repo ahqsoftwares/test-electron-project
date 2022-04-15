@@ -31,8 +31,8 @@ async function updateCheck() {
         appName: "electron-project", //[Required] The Name of the app archive and the app folder.
         appExecutableName: "electron-project.exe", //[Required] The Executable of the Application to be Run after updating.
     
-        progressBar: document.getElementById("download"), // {Default is null} [Optional] If Using Electron with a HTML Progressbar, use that element here, otherwise ignore
-        label: document.getElementById("download-label"), // {Default is null} [Optional] If Using Electron, this will be the area where we put status updates using InnerHTML
+        progressBar: null, // {Default is null} [Optional] If Using Electron with a HTML Progressbar, use that element here, otherwise ignore
+        label: null, // {Default is null} [Optional] If Using Electron, this will be the area where we put status updates using InnerHTML
         stageTitles: defaultStages, // {Default is defaultStages} [Optional] Sets the Status Title for Each Stage
     };
 
@@ -65,7 +65,7 @@ async function load() {
         start(await(updateCheck()), updater);
 }
 
-execute(async function() {
+async function newapp() {
     const lib = new BrowserWindow({
         width: 1200,
         height: 600,
@@ -95,7 +95,7 @@ execute(async function() {
         lib.maximize()
     }
     });
-});
+}
 
 async function start(update, updater) {
     if (update) {
@@ -104,14 +104,8 @@ async function start(update, updater) {
         //old_win.close()
         updater.loadFile("./src/updater.html");
 
-        // ipc.on("executeClosure", () => {
-        //     updater.close()
-        // });
+        ipc.on("startNewApp", () => {
+            updater.close()
+            newapp()
+        });
 }
-
-app.whenReady().then(() => {
-    load()
-    app.on('window-all-closed', () => {
-        app.quit();
-    });
-});
