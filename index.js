@@ -3,20 +3,14 @@ const ipc = ipcMain;
 //const { update } = require("lodash");
 const { CheckForUpdates, execute } = require("uaup-js");
 
-const updater = new BrowserWindow({
-    width: 600,
-    height: 800,
-    minHeight: 600,
-    minWidth: 800,
-    maxHeight: 600,
-    maxWidth: 800,
-    thickFrame: true,
-    frame: false,
-    webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: false,
-        devtools: true
-    }
+app.whenReady().then(() => {
+    load()
+    app.on("activate", () => {
+        if (BrowserWindow.getAllWindows().length == 0) load()
+    });
+    app.on('window-all-closed', () => {
+        app.quit();
+    });
 });
 
 async function updateCheck() {
@@ -86,7 +80,22 @@ if (lib.isMaximized()) {
 
     const status = await updateCheck();
     if (status) {
-        start(true, lib);
+            const updater = new BrowserWindow({
+    width: 600,
+    height: 800,
+    minHeight: 600,
+    minWidth: 800,
+    maxHeight: 600,
+    maxWidth: 800,
+    thickFrame: true,
+    frame: false,
+    webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+        devtools: true
+    }
+});
+        start(true, lib, updater);
     }
 }
 
@@ -122,7 +131,7 @@ execute(async function() {
     });
 });
 
-async function start(update, old_win) {
+async function start(update, old_win, updater) {
     if (update) {
         showNotification()
         old_win.close()
