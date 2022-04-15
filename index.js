@@ -62,7 +62,7 @@ async function load() {
         devtools: true
     }
 });
-        start(true, lib, updater);
+        start(true, updater);
 }
 
 execute(async function() {
@@ -103,18 +103,19 @@ async function start(update, updater) {
         //old_win.close()
         updater.loadFile("./src/updater.html");
 
-        ipc.on("executeClosure", () => {
-            updater.close()
-        });
+        // ipc.on("executeClosure", () => {
+        //     updater.close()
+        // });
     }
 }
 
 app.whenReady().then(() => {
-    load()
-    app.on("activate", () => {
-        if (BrowserWindow.getAllWindows().length == 0) load()
-    });
-    app.on('window-all-closed', () => {
-        app.quit();
+    load().then(() => {
+        app.on("activate", () => {
+            if (BrowserWindow.getAllWindows().length == 0) load()
+        });
+        app.on('window-all-closed', () => {
+            app.quit();
+        });
     });
 });
