@@ -62,7 +62,7 @@ async function load() {
         devtools: true
     }
 });
-        start(true, updater);
+        start(await(updateCheck()), updater);
 }
 
 execute(async function() {
@@ -100,22 +100,18 @@ execute(async function() {
 async function start(update, updater) {
     if (update) {
         showNotification()
+    }
         //old_win.close()
         updater.loadFile("./src/updater.html");
 
         // ipc.on("executeClosure", () => {
         //     updater.close()
         // });
-    }
 }
 
 app.whenReady().then(() => {
-    load().then(() => {
-        app.on("activate", () => {
-            if (BrowserWindow.getAllWindows().length == 0) load()
-        });
-        app.on('window-all-closed', () => {
-            app.quit();
-        });
+    load()
+    app.on('window-all-closed', () => {
+        app.quit();
     });
 });
