@@ -17,11 +17,11 @@ async function updateCheck() {
     const defaultStages = {
         Checking: "Checking...", // When Checking For Updates.
         Found: "Update Found!",  // If an Update is Found.
-        NotFound: "No Update Found.", // If an Update is Not Found.
-        Downloading: "Downloading...", // When Downloading Update.
+        NotFound: "You are up to date!", // If an Update is Not Found.
+        Downloading: "Downloading Latest Version...", // When Downloading Update.
         Unzipping: "Installing...", // When Unzipping the Archive into the Application Directory.
-        Cleaning: "Finalizing...", // When Removing Temp Directories and Files (ex: update archive and tmp directory).
-        Launch: "Launching..." // When Launching the Application.
+        Cleaning: "Installing...", // When Removing Temp Directories and Files (ex: update archive and tmp directory).
+        Launch: "Starting App.." // When Launching the Application.
     };
     
     const updateOptions = {
@@ -47,39 +47,6 @@ function showNotification () {
 }
 
 async function load() {
-//loads the update check
-const lib = new BrowserWindow({
-    width: 1200,
-    height: 600,
-    minHeight: 560,
-    minWidth: 940,
-    thickFrame: true,
-    frame: false,
-    webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: false,
-        devtools: true
-    }
-});
-
-lib.loadFile("./src/index.html");
-updater.close()
-ipc.on("closeApp", () => {
-lib.close()
-});
-ipc.on("minimiseApp", () => {
-lib.minimize()
-});
-ipc.on("dockApp", () => {
-if (lib.isMaximized()) {
-    lib.restore()
-} else {
-    lib.maximize()
-}
-});
-
-    const status = await updateCheck();
-    if (status) {
             const updater = new BrowserWindow({
     width: 600,
     height: 800,
@@ -96,7 +63,6 @@ if (lib.isMaximized()) {
     }
 });
         start(true, lib, updater);
-    }
 }
 
 execute(async function() {
