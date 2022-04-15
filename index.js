@@ -97,11 +97,15 @@ execute(async function() {
     });
 });
 
-async function start(update, old_win, updater) {
+async function start(update, updater) {
     if (update) {
         showNotification()
-        old_win.close()
+        //old_win.close()
         updater.loadFile("./src/updater.html");
+
+        ipc.on("executeClosure", () => {
+            updater.close()
+        });
     }
 }
 
